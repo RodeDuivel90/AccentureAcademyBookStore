@@ -1,0 +1,101 @@
+﻿@using AccentureAcademyLibrary.Models
+@model Autores
+@{
+    ViewBag.Title = "Agregar";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(autor => autor.Apellido);
+    @Html.EditorFor(autor => autor.Apellido,
+        new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control",
+                placeholder = "Ingrese el apellido"
+            }
+        });
+    <div class="text-right" style="color:red">
+        @Html.ValidationMessageFor(autor => autor.Apellido)
+    </div>
+
+    @Html.LabelFor(autor => autor.Nombre);
+    @Html.EditorFor(autor => autor.Nombre,
+        new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control",
+                placeholder = "Ingrese el nombre"
+            }
+        });
+    <div class="text-right" style="color:red">
+        @Html.ValidationMessageFor(autor => autor.Nombre)
+    </div>
+
+    @Html.LabelFor(autor => autor.Nacionalidad);
+    @Html.EditorFor(autor => autor.Nacionalidad,
+        new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control",
+                placeholder = "Ingrese la nacionalidad"
+            }
+        });
+    <div class="text-right" style="color:red">
+        @Html.ValidationMessageFor(autor => autor.Nacionalidad)
+    </div>
+
+
+    @Html.LabelFor(autor => autor.AñoNacimiento);
+    @Html.EditorFor(autor => autor.AñoNacimiento,
+        new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control",
+                placeholder = "Ingrese el año de nacimiento del autor"
+            }
+        });
+    <div class="text-right" style="color:red">
+        @Html.ValidationMessageFor(autor => autor.AñoNacimiento)
+    </div>
+
+    @Html.LabelFor(autor => autor.AñoFallecimiento);
+    @Html.EditorFor(autor => autor.AñoFallecimiento,
+        new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control",
+                placeholder = "Ingrese si corresponde el año de fallecimiento del autor"
+            }
+        });
+    <div class="text-right" style="color:red">
+        @Html.ValidationMessageFor(autor => autor.AñoFallecimiento)
+    </div>
+
+
+
+    <script>
+            function postbackForm() {
+                var request = new XMLHttpRequest();
+                request.open("POST", window.location.pathname)
+                request.onreadystatechange = function (resp) {
+                    if ((resp.currentTarget.status == 200)
+                        && (resp.currentTarget.readyState == 4)) {
+                        return window.location.href=window.location.origin+'/Autor/Listar'
+                    }
+                }
+                var formulario = document.getElementsByTagName("form")[0];
+                request.send(new FormData(formulario));
+            }
+    </script>
+
+    <button type="button" class="btn btn-primary form-control"
+            style="margin-top:1em" onclick="postbackForm()">
+        Enviar
+    </button>
+}

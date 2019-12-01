@@ -1,0 +1,43 @@
+﻿@using AccentureAcademyLibrary.Models
+@model Generos
+@{
+    ViewBag.Title = "Agregar";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(genero => genero.NombreGenero);
+    @Html.EditorFor(genero => genero.NombreGenero,
+        new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control",
+                placeholder = "Ingrese el género literario"
+            }
+        });
+    <div class="text-right" style="color:red">
+        @Html.ValidationMessageFor(genero => genero.NombreGenero)
+    </div>
+
+
+    <script>
+            function postbackForm() {
+                var request = new XMLHttpRequest();
+                request.open("POST", window.location.pathname)
+                request.onreadystatechange = function (resp) {
+                    if ((resp.currentTarget.status == 200)
+                        && (resp.currentTarget.readyState == 4)) {
+                        return window.location.href=window.location.origin+'/Genero/Listar'
+                    }
+                }
+                var formulario = document.getElementsByTagName("form")[0];
+                request.send(new FormData(formulario));
+            }
+    </script>
+
+    <button type="button" class="btn btn-primary form-control"
+            style="margin-top:1em" onclick="postbackForm()">
+        Enviar
+    </button>
+}

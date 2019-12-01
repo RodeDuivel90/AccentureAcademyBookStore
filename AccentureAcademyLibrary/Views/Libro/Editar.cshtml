@@ -1,0 +1,221 @@
+﻿@using AccentureAcademyLibrary.Models
+@model Libros
+
+@{
+    /**/
+
+    ViewBag.Title = "Editar";
+}
+
+@{
+    AccentureAcademyBooksEntities db = new AccentureAcademyBooksEntities();
+    List<Autores> autores = db.Autores.OrderBy(au => au.Apellido).ToList();
+    List<Editoriales> editoriales = db.Editoriales.OrderBy(ed => ed.NombreEditorial).ToList();
+    List<Generos> generos = db.Generos.OrderBy(ge => ge.NombreGenero).ToList();
+}
+
+<script>
+    function nuevoAutor() {
+        var lista = document.getElementById("listaAutores");
+        var select = lista.firstElementChild;
+        var copiaSelect = select.cloneNode(true);
+        copiaSelect.selectedIndex = 0;
+        lista.appendChild(copiaSelect);
+    }
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(libro => libro.Isbn);
+    @Html.EditorFor(libro => libro.Isbn,
+    new
+    {
+        htmlAttributes = new
+        {
+            @class = "form-control",
+            placeholder = "Ingrese el ISBN",
+            required = true
+
+
+        }
+    });
+    <div class="text-right" style="color:red">
+        @Html.ValidationMessageFor(libro => libro.Isbn)
+    </div>
+
+    @Html.LabelFor(libro => libro.NombreLibro);
+    @Html.EditorFor(libro => libro.NombreLibro,
+        new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control",
+                placeholder = "Ingrese el Título",
+                required = true
+
+            }
+        });
+    <div class="text-right" style="color:red">
+        @Html.ValidationMessageFor(libro => libro.NombreLibro)
+    </div>
+
+    <div>Autores:</div>
+        <div id="listaAutores">
+            @if (this.Model != null)
+            {
+                foreach (Autores autorLibro in this.Model.Autores)
+                {
+                    <select class="form-control" name="autores" required>
+                        <option>Seleccione un autor...</option>
+                        @foreach (Autores autorActual in autores)
+                        {
+                            <option @(autorActual.Id.Equals(autorLibro.Id) ? "selected" : "")
+                                    value="@autorActual.Id">
+                                @autorActual.Apellido @autorActual.Nombre
+                            </option>
+                        }
+                    </select>
+                }
+            }
+            else
+            {
+                <select class="form-control" name="autores" required>
+                    <option selected>Seleccione un autor...</option>
+                    @foreach (Autores autor in autores)
+                    {
+                        <option value="@autor.Id">@autor.Apellido</option>
+                    }
+                </select>
+            }
+        </div>
+
+        <div class="text-right">
+            <a onclick="nuevoAutor()">otro autor...</a>
+        </div>
+
+        <div class="text-right">
+            <a href="~/Autor/Agregar">Crear autor...</a>
+        </div>
+
+        <div>Editoriales:</div>
+        <div id="listaEditoriales">
+            @if (this.Model != null)
+            {
+                foreach (Editoriales editorialLibro in this.Model.Editoriales)
+                {
+                    <select class="form-control" name="editoriales" required>
+                        <option>Seleccione una editorial...</option>
+                        @foreach (Editoriales editorialActual in editoriales)
+                        {
+                            <option @(editorialActual.Id.Equals(editorialLibro.Id) ? "selected" : "")
+                                    value="@editorialActual.Id">
+                                @editorialActual.NombreEditorial
+                            </option>
+                        }
+                    </select>
+                }
+            }
+            else
+            {
+                <select class="form-control" name="editoriales" required>
+                    <option selected>Seleccione una editorial...</option>
+                    @foreach (Editoriales editorial in editoriales)
+                    {
+                        <option value="@editorial.Id">@editorial.NombreEditorial</option>
+                    }
+                </select>
+            }
+        </div>
+        <div class="text-right">
+            <a href="~/Editorial/Agregar">Crear editorial...</a>
+        </div>
+
+        <div>Géneros Literarios:</div>
+        <div id="listaGeneros">
+            @if (this.Model != null)
+            {
+                foreach (Generos generoLibro in this.Model.Generos)
+                {
+                    <select class="form-control" name="generos" required>
+                        <option>Seleccione una género...</option>
+                        @foreach (Generos generoActual in generos)
+                        {
+                            <option @(generoActual.Id.Equals(generoLibro.Id) ? "selected" : "")
+                                    value="@generoActual.Id">
+                                @generoActual.NombreGenero
+                            </option>
+                        }
+                    </select>
+                }
+            }
+            else
+            {
+                <select class="form-control" name="generos" required>
+                    <option selected>Seleccione un género...</option>
+                    @foreach (Generos genero in generos)
+                    {
+                        <option value="@genero.Id">@genero.NombreGenero</option>
+                    }
+                </select>
+            }
+        </div>
+        <div class="text-right">
+            <a href="~/Genero/Agregar">Crear género...</a>
+        </div>
+
+        @Html.LabelFor(libro => libro.Idioma)
+        @Html.EditorFor(libro => libro.Idioma,
+        new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control",
+                placeholder = "Ingrese el Idioma",
+                required = true
+
+            }
+        });
+    <div class="text-right" style="color:red">
+        @Html.ValidationMessageFor(libro => libro.Idioma)
+    </div>
+        @Html.LabelFor(libro => libro.AñoEdicion)
+        @Html.EditorFor(libro => libro.AñoEdicion,
+        new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control",
+                placeholder = "Ingrese el año de la edición",
+                required = true
+
+            }
+        });
+    <div class="text-right" style="color:red">
+        @Html.ValidationMessageFor(libro => libro.AñoEdicion)
+    </div>
+        <script>
+            function postbackForm() {
+                var request = new XMLHttpRequest();
+                request.open("POST", window.location.pathname)
+                request.onreadystatechange = function (resp) {
+                    if ((resp.currentTarget.status == 200)
+                        && (resp.currentTarget.readyState == 4)) {
+                        return window.location.href=window.location.origin+'/Libro/Listar'
+
+
+
+                    }
+                }
+                var formulario = document.getElementsByTagName("form")[0];
+                request.send(new FormData(formulario));
+            }
+        </script>
+
+        <button type="button" class="btn btn-primary form-control"
+                style="margin-top:1em" onclick="postbackForm()">
+            Enviar
+        </button>
+}
+
+
+

@@ -1,0 +1,80 @@
+﻿@using AccentureAcademyLibrary.Models
+@model IEnumerable<Autores>
+@{
+    ViewBag.Title = "Listar";
+}
+
+<div class="text-right">
+    @Html.ActionLink("Agregar", "Agregar")
+</div>
+
+
+@using (Html.BeginForm())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th>Nacionalidad</th>
+                <th>Año de Nacimiento</th>
+                <th>Año de Fallecimiento</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+}
+
+<script>
+        var tableBody = document.getElementById("tableBody");
+        var req = new XMLHttpRequest();
+        req.open("GET", "/Autor/JsonListar");
+        req.send();
+        req.onreadystatechange = function (resp) {
+            if ((resp.currentTarget.readyState == 4) && (resp.currentTarget.status == 200)) {
+                var listaAutores = JSON.parse(resp.currentTarget.responseText);
+                for (var aut of listaAutores) {
+                    var fila = document.createElement("tr");
+
+                    var celdaApellido = document.createElement("td");
+                    celdaApellido.innerHTML = aut.Apellido;
+
+                    var celdaNombre = document.createElement("td");
+                    celdaNombre.innerHTML = aut.Nombre;
+
+                    var celdaNacionalidad = document.createElement("td");
+                    celdaNacionalidad.innerHTML = aut.Nacionalidad;
+
+                    var celdaAnioNacimiento = document.createElement("td");
+                    celdaAnioNacimiento.innerHTML = aut.AnioNacimiento;
+
+                    var celdaAnioFallecimiento = document.createElement("td");
+                    celdaAnioFallecimiento.innerHTML = aut.AnioFallecimiento;
+
+                    var celdaAcciones = document.createElement("td");
+                    celdaAcciones.className = "text-right";
+
+                    var spanEditar = document.createElement("span");
+                    spanEditar.innerHTML = '@Html.ActionLink(" ", "Editar", null, new { @class = "glyphicon glyphicon-pencil", style = "font-size:1.5em" })';
+                    spanEditar.innerHTML = spanEditar.innerHTML.replace("/Editar", "/Editar/" + aut.Id)
+                    spanEditar.style.marginRight = "2em"
+                    celdaAcciones.appendChild(spanEditar);
+
+                    var spanBorrar = document.createElement("span");
+                    spanBorrar.innerHTML = '@Html.ActionLink(" ", "Eliminar", null, new { @class = "glyphicon glyphicon-trash", style = "font-size:1.5em"})';
+                    spanBorrar.innerHTML = spanBorrar.innerHTML.replace("/Eliminar", "/Eliminar/" + aut.Id);
+                    celdaAcciones.appendChild(spanBorrar);
+
+                    fila.appendChild(celdaApellido);
+                    fila.appendChild(celdaNombre);
+                    fila.appendChild(celdaNacionalidad);
+                    fila.appendChild(celdaAnioNacimiento);
+                    fila.appendChild(celdaAnioFallecimiento);
+                    fila.appendChild(celdaAcciones);
+
+                    tableBody.appendChild(fila);
+                }
+            }
+        }
+</script>

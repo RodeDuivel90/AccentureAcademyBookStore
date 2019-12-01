@@ -1,0 +1,201 @@
+﻿@using AccentureAcademyLibrary.Models
+@model IEnumerable<Libros>
+
+
+@{
+    ViewBag.Title = "Listar";
+}
+
+@{
+    AccentureAcademyBooksEntities db = new AccentureAcademyBooksEntities();
+
+}
+<div class="text-right">
+    @Html.ActionLink("Agregar", "Agregar")
+</div>
+
+<script>
+
+    function filterSearch() {
+
+        if(filtroAutor.selectedIndex!=0){
+            var FiltroLibros = arr.filter(function(filtro){
+                return filtro.ApellidoAutor == filtroAutor.options[filtroAutor.selectedIndex].innerText;
+            });
+        }else{
+            FiltroLibros=arr;
+        }
+        tableBody.innerHTML = "";
+
+                for(var libFiltro of FiltroLibros) {
+                    var fila = document.createElement("tr");
+
+                    var celdaIsbn = document.createElement("td");
+                    celdaIsbn.innerHTML = libFiltro.Isbn;
+
+                    var celdaTitulo = document.createElement("td");
+                    celdaTitulo.innerHTML = libFiltro.Titulo;
+
+                    var celdaAutor = document.createElement("td");
+                    celdaAutor.innerHTML = libFiltro.ApellidoAutor;
+
+                    var celdaEditorial = document.createElement("td");
+                    celdaEditorial.innerHTML = libFiltro.EditorialLibro;
+
+                    var celdaGenero = document.createElement("td");
+                    celdaGenero.innerHTML = libFiltro.GeneroLibro;
+
+                    var celdaIdioma = document.createElement("td");
+                    celdaIdioma.innerHTML = libFiltro.Idioma;
+
+                    var celdaAnio = document.createElement("td");
+                    celdaAnio.innerHTML = libFiltro.Anio;
+
+                    var celdaAcciones = document.createElement("td");
+                    celdaAcciones.className = "text-right";
+
+                    var spanEditar = document.createElement("span");
+                    spanEditar.innerHTML = '@Html.ActionLink(" ", "Editar", null, new { @class = "glyphicon glyphicon-pencil", style = "font-size:1.5em"})';
+                    spanEditar.innerHTML = spanEditar.innerHTML.replace("/Editar", "/Editar/" + libFiltro.Id)
+                    spanEditar.style.marginRight = "2em"
+                    celdaAcciones.appendChild(spanEditar);
+
+                    var spanBorrar = document.createElement("span");
+                    spanBorrar.innerHTML = '@Html.ActionLink(" ", "Eliminar", null, new { @class = "glyphicon glyphicon-trash", style = "font-size:1.5em"})';
+                    spanBorrar.innerHTML = spanBorrar.innerHTML.replace("/Eliminar", "/Eliminar/" + libFiltro.Id);
+                    celdaAcciones.appendChild(spanBorrar);
+
+
+                    fila.appendChild(celdaIsbn);
+                    fila.appendChild(celdaTitulo);
+                    fila.appendChild(celdaAutor);
+                    fila.appendChild(celdaEditorial);
+                    fila.appendChild(celdaGenero);
+                    fila.appendChild(celdaIdioma);
+                    fila.appendChild(celdaAnio);
+                    fila.appendChild(celdaAcciones);
+
+                    tableBody.appendChild(fila);
+                }
+            }
+
+
+
+
+
+</script>
+
+@using (Html.BeginForm())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Titulo</th>
+                <th>Autor</th>
+                <th>Editorial</th>
+                <th>Género</th>
+                <th>Idioma</th>
+                <th>Año de Edición</th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <td>
+                    <p>Buscar por Autor</p>
+                </td>
+                <td>
+                    <select class="form-control" name="FiltroAutor" id="FiltroAutor">
+                        <option>Seleccione un autor...</option>
+                        @foreach (Autores autor in db.Autores.ToList())
+                        {
+                            <option value="@autor.Id">@autor.Apellido</option>
+                        }
+                    </select>
+                </td>
+
+
+                <td class="text-right">
+                    <button class="glyphicon glyphicon-search btn btn-primary" type="button" onclick="filterSearch()"></button>
+                </td>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr></tr>
+
+        </tbody>
+    </table>
+}
+
+<script>
+        var filtroAutor = document.getElementById("FiltroAutor")
+        var arr=[];
+        var tableBody = document.getElementById("tableBody");
+        var req = new XMLHttpRequest();
+        req.open("GET", "/Libro/JsonListar");
+        req.send();
+        req.onreadystatechange = function (resp) {
+            if ((resp.currentTarget.readyState == 4) && (resp.currentTarget.status == 200)) {
+                var listaLibros = JSON.parse(resp.currentTarget.responseText);
+                for (var lib of listaLibros) {
+                    arr.push(lib);
+
+                    var fila = document.createElement("tr");
+
+                    var celdaIsbn = document.createElement("td");
+                    celdaIsbn.innerHTML = lib.Isbn;
+
+                    var celdaTitulo = document.createElement("td");
+                    celdaTitulo.innerHTML = lib.Titulo;
+
+                    var celdaAutor = document.createElement("td");
+                    celdaAutor.innerHTML = lib.ApellidoAutor;
+
+                    var celdaEditorial = document.createElement("td");
+                    celdaEditorial.innerHTML = lib.EditorialLibro;
+
+                    var celdaGenero = document.createElement("td");
+                    celdaGenero.innerHTML = lib.GeneroLibro;
+
+                    var celdaIdioma = document.createElement("td");
+                    celdaIdioma.innerHTML = lib.Idioma;
+
+                    var celdaAnio = document.createElement("td");
+                    celdaAnio.innerHTML = lib.Anio;
+
+                    var celdaAcciones = document.createElement("td");
+                    celdaAcciones.className = "text-right";
+
+                    var spanEditar = document.createElement("span");
+                    spanEditar.innerHTML = '@Html.ActionLink(" ", "Editar", null, new { @class = "glyphicon glyphicon-pencil", style = "font-size:1.5em"})';
+                    spanEditar.innerHTML = spanEditar.innerHTML.replace("/Editar", "/Editar/" + lib.Id)
+                    spanEditar.style.marginRight = "2em"
+                    celdaAcciones.appendChild(spanEditar);
+
+                    var spanBorrar = document.createElement("span");
+                    spanBorrar.innerHTML = '@Html.ActionLink(" ", "Eliminar", null, new { @class = "glyphicon glyphicon-trash", style = "font-size:1.5em"})';
+                    spanBorrar.innerHTML = spanBorrar.innerHTML.replace("/Eliminar", "/Eliminar/" + lib.Id);
+                    celdaAcciones.appendChild(spanBorrar);
+
+
+                    fila.appendChild(celdaIsbn);
+                    fila.appendChild(celdaTitulo);
+                    fila.appendChild(celdaAutor);
+                    fila.appendChild(celdaEditorial);
+                    fila.appendChild(celdaGenero);
+                    fila.appendChild(celdaIdioma);
+                    fila.appendChild(celdaAnio);
+                    fila.appendChild(celdaAcciones);
+
+                    tableBody.appendChild(fila);
+                }
+            }
+        }
+
+
+
+</script>
+
+
+
+

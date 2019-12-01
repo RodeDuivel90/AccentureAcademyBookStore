@@ -1,0 +1,77 @@
+﻿@using AccentureAcademyLibrary.Models
+@model IEnumerable<Editoriales>
+@{
+    ViewBag.Title = "Listar";
+}
+
+<div class="text-right">
+    @Html.ActionLink("Agregar", "Agregar")
+</div>
+
+
+
+
+
+
+
+@using (Html.BeginForm())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Editorial</th>
+                <th>País</th>
+                <th>Website</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+}
+
+<script>
+        var tableBody = document.getElementById("tableBody");
+        var req = new XMLHttpRequest();
+        req.open("GET", "/Editorial/JsonListar");
+        req.send();
+        req.onreadystatechange = function (resp) {
+            if ((resp.currentTarget.readyState == 4) && (resp.currentTarget.status == 200)) {
+                var listaEditoriales = JSON.parse(resp.currentTarget.responseText);
+                for (var edi of listaEditoriales) {
+                    var fila = document.createElement("tr");
+
+                    var celdaNombre = document.createElement("td");
+                    celdaNombre.innerHTML = edi.NombreEditorial;
+
+                    var celdaPais = document.createElement("td");
+                    celdaPais.innerHTML = edi.Pais;
+
+                    var celdaWebsite = document.createElement("td");
+                    celdaWebsite.innerHTML = edi.Website;
+
+                    var celdaAcciones = document.createElement("td");
+                    celdaAcciones.className = "text-right";
+
+                    var spanEditar = document.createElement("span");
+                    spanEditar.innerHTML = '@Html.ActionLink(" ", "Editar", null, new { @class = "glyphicon glyphicon-pencil", style = "font-size:1.5em"})';
+                    spanEditar.innerHTML = spanEditar.innerHTML.replace("/Editar", "/Editar/" + edi.Id)
+                    spanEditar.style.marginRight = "2em"
+                    celdaAcciones.appendChild(spanEditar);
+
+                    var spanBorrar = document.createElement("span");
+                    spanBorrar.innerHTML = '@Html.ActionLink(" ", "Eliminar", null, new { @class = "glyphicon glyphicon-trash", style = "font-size:1.5em"})';
+                    spanBorrar.innerHTML = spanBorrar.innerHTML.replace("/Eliminar", "/Eliminar/" + edi.Id);
+                    celdaAcciones.appendChild(spanBorrar);
+
+
+                    fila.appendChild(celdaNombre);
+                    fila.appendChild(celdaPais);
+                    fila.appendChild(celdaWebsite);
+                    fila.appendChild(celdaAcciones);
+
+                    tableBody.appendChild(fila);
+                }
+            }
+        }
+</script>
+
