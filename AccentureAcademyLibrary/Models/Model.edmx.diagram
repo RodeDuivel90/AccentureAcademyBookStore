@@ -5,9 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="e9982e8847fd4f5390dca0b5c05d27b8" Name="Diagram1">
-        <EntityTypeShape EntityType="AccentureAcademyBooksModel.Autores" Width="1.5" PointX="0.75" PointY="1" />
-        <EntityTypeShape EntityType="AccentureAcademyBooksModel.Editoriales" Width="1.5" PointX="0.75" PointY="5" />
-        <EntityTypeShape EntityType="AccentureAcademyBooksModel.Generos" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="AccentureAcademyBooksModel.Autores" Width="1.5" PointX="0.75" PointY="5.375" />
+        <EntityTypeShape EntityType="AccentureAcademyBooksModel.Editoriales" Width="1.5" PointX="0.75" PointY="1.25" />
+        <EntityTypeShape EntityType="AccentureAcademyBooksModel.Generos" Width="1.5" PointX="0.75" PointY="8.5" />
         <EntityTypeShape EntityType="AccentureAcademyBooksModel.Libros" Width="1.5" PointX="3" PointY="1" />
         <AssociationConnector Association="AccentureAcademyBooksModel.AutoresDeLibros" />
         <AssociationConnector Association="AccentureAcademyBooksModel.EditorialesLibros" />

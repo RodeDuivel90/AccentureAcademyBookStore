@@ -18,9 +18,9 @@
 
     function filterSearch() {
 
-        if(filtroAutor.selectedIndex!=0){
-            var FiltroLibros = arr.filter(function(filtro){
-                return filtro.ApellidoAutor == filtroAutor.options[filtroAutor.selectedIndex].innerText;
+        if(filtroEditorial.selectedIndex!=0){
+            var FiltroLibros = arr.filter(function (filtro) {
+                return filtro.EditorialLibro == filtroEditorial.options[filtroEditorial.selectedIndex].innerText;
             });
         }else{
             FiltroLibros=arr;
@@ -102,14 +102,14 @@
 
             <tr>
                 <td>
-                    <p>Buscar por Autor</p>
+                    <p>Buscar por Editorial</p>
                 </td>
                 <td>
-                    <select class="form-control" name="FiltroAutor" id="FiltroAutor">
-                        <option>Seleccione un autor...</option>
-                        @foreach (Autores autor in db.Autores.ToList())
+                    <select class="form-control" name="FiltroEditorial" id="FiltroEditorial">
+                        <option>Seleccione una editorial...</option>
+                        @foreach (Editoriales editorial in db.Editoriales.ToList())
                         {
-                            <option value="@autor.Id">@autor.Apellido</option>
+                            <option value="@editorial.Id">@editorial.NombreEditorial</option>
                         }
                     </select>
                 </td>
@@ -128,7 +128,7 @@
 }
 
 <script>
-        var filtroAutor = document.getElementById("FiltroAutor")
+        var filtroEditorial = document.getElementById("FiltroEditorial")
         var arr=[];
         var tableBody = document.getElementById("tableBody");
         var req = new XMLHttpRequest();
@@ -173,7 +173,7 @@
                     celdaAcciones.appendChild(spanEditar);
 
                     var spanBorrar = document.createElement("span");
-                    spanBorrar.innerHTML = '@Html.ActionLink(" ", "Eliminar", null, new { @class = "glyphicon glyphicon-trash", style = "font-size:1.5em"})';
+                    spanBorrar.innerHTML = '@Html.ActionLink(" ", "Eliminar", null, new { @class = "glyphicon glyphicon-trash", style = "font-size:1.5em", onclick= "if(confirm('¿Estás seguro de eliminarlo?')){}else{return false;};" })';
                     spanBorrar.innerHTML = spanBorrar.innerHTML.replace("/Eliminar", "/Eliminar/" + lib.Id);
                     celdaAcciones.appendChild(spanBorrar);
 

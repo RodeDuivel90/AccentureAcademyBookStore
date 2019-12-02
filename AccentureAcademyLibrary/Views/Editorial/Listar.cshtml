@@ -59,7 +59,7 @@
                     celdaAcciones.appendChild(spanEditar);
 
                     var spanBorrar = document.createElement("span");
-                    spanBorrar.innerHTML = '@Html.ActionLink(" ", "Eliminar", null, new { @class = "glyphicon glyphicon-trash", style = "font-size:1.5em"})';
+                    spanBorrar.innerHTML = '@Html.ActionLink(" ", "Eliminar", null, new { @class = "glyphicon glyphicon-trash", style = "font-size:1.5em", onclick = "if(confirm('¿Estás seguro de eliminarlo?')){}else{return false;};" })';
                     spanBorrar.innerHTML = spanBorrar.innerHTML.replace("/Eliminar", "/Eliminar/" + edi.Id);
                     celdaAcciones.appendChild(spanBorrar);
 
